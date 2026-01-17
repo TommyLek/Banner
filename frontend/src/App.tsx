@@ -25,6 +25,7 @@ function App() {
     fetchLogos,
     uploadLogo,
     deleteLogo,
+    deleteImage,
   } = useImageGeneration();
 
   useEffect(() => {
@@ -127,7 +128,7 @@ function App() {
             <h2 className="text-lg font-semibold text-gray-900 mb-4">
               Genererade banners
             </h2>
-            <ImageGallery images={generatedImages} isLoading={isLoading} />
+            <ImageGallery images={generatedImages} isLoading={isLoading} onDeleteImage={deleteImage} />
           </div>
         </div>
       </div>

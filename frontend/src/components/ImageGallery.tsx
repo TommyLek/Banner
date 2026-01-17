@@ -4,9 +4,10 @@ import { ImageCard } from './ImageCard';
 interface ImageGalleryProps {
   images: GeneratedImage[];
   isLoading: boolean;
+  onDeleteImage: (id: string) => void;
 }
 
-export function ImageGallery({ images, isLoading }: ImageGalleryProps) {
+export function ImageGallery({ images, isLoading, onDeleteImage }: ImageGalleryProps) {
   if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center py-12 space-y-4">
@@ -30,7 +31,7 @@ export function ImageGallery({ images, isLoading }: ImageGalleryProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {images.map((image) => (
-        <ImageCard key={image.id} image={image} />
+        <ImageCard key={image.id} image={image} onDelete={onDeleteImage} />
       ))}
     </div>
   );

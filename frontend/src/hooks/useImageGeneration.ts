@@ -13,6 +13,7 @@ interface UseImageGenerationResult {
   fetchLogos: () => Promise<void>;
   uploadLogo: (file: File, name: string) => Promise<void>;
   deleteLogo: (logoId: string) => Promise<void>;
+  deleteImage: (imageId: string) => Promise<void>;
 }
 
 export function useImageGeneration(): UseImageGenerationResult {
@@ -90,6 +91,18 @@ export function useImageGeneration(): UseImageGenerationResult {
     setLogos((prev) => prev.filter((l) => l.id !== logoId));
   };
 
+  const deleteImage = async (imageId: string) => {
+    const response = await fetch(`/api/images/${imageId}`, {
+      method: 'DELETE',
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to delete image');
+    }
+
+    setGeneratedImages((prev) => prev.filter((img) => img.id !== imageId));
+  };
+
   const generate = async (file: File, prompt: string, size: string, logoIds?: string[]) => {
     setIsLoading(true);
     setError(null);
@@ -136,5 +149,6 @@ export function useImageGeneration(): UseImageGenerationResult {
     fetchLogos,
     uploadLogo,
     deleteLogo,
+    deleteImage,
   };
 }

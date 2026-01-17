@@ -45,3 +45,15 @@ export async function listImages(): Promise<string[]> {
     .filter(f => /\.(png|jpg|jpeg|webp|gif)$/i.test(f))
     .map(f => `/uploads/${f}`);
 }
+
+export async function deleteImage(imageId: string): Promise<boolean> {
+  const filename = imageId.endsWith('.png') ? imageId : `${imageId}.png`;
+  const filePath = path.join(uploadsDir, filename);
+
+  try {
+    await fs.unlink(filePath);
+    return true;
+  } catch {
+    return false;
+  }
+}

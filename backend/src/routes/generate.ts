@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import { upload } from '../middleware/upload.js';
 import { generateImage, ReferenceImage } from '../services/gemini.js';
-import { resizeAndSave, listImages } from '../services/imageProcessor.js';
+import { resizeAndSave, listImages, deleteImage } from '../services/imageProcessor.js';
 import { parseSizeString, BANNER_SIZES } from '../config/bannerSizes.js';
 import { getLogoBuffer } from './logos.js';
 
@@ -21,6 +21,23 @@ router.get('/images', async (_req: Request, res: Response) => {
   } catch (error) {
     console.error('Error listing images:', error);
     res.status(500).json({ error: 'Failed to list images' });
+  }
+});
+
+// Delete an image
+router.delete('/images/:id', async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const deleted = await deleteImage(id);
+
+    if (deleted) {
+      res.json({ success: true });
+    } else {
+      res.status(404).json({ error: 'Image not found' });
+    }
+  } catch (error) {
+    console.error('Error deleting image:', error);
+    res.status(500).json({ error: 'Failed to delete image' });
   }
 });
 
